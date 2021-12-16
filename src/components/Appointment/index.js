@@ -7,6 +7,7 @@ import Empty from "./Empty";
 import Status from "./Status";
 import Form from "./Form";
 import Confirm from "./Confirm";
+import Error from "./Error";
 import useVisualMode from "hooks/useVisualMode";
 
 const EMPTY = "EMPTY";
@@ -15,6 +16,7 @@ const CREATE = "CREATE";
 const STATUS = "STATUS";
 const CONFIRM = "CONFIRM";
 const EDIT = "EDIT";
+const ERROR = "ERROR";
 
 export default function Appointment(props) {
   const { mode, transition, back } = useVisualMode(
@@ -27,16 +29,27 @@ export default function Appointment(props) {
       interviewer,
     };
     transition(STATUS);
-    props.bookInterview(props.id, interview).then(() => {
-      transition(SHOW);
-    });
+    props
+      .bookInterview(props.id, interview)
+      .then(() => {
+        transition(SHOW);
+      })
+      .catch((error) => {
+        transition(ERROR, true);
+      });
   }
 
   function deleteInterview() {
     transition(STATUS);
-    props.cancelInterview(props.id).then(() => {
-      transition(EMPTY);
-    });
+    props
+      .cancelInterview(props.id)
+      .then(() => {
+        console.log("hi");
+        transition(EMPTY);
+      })
+      .catch(() => {
+        transition(ERROR, true);
+      });
   }
 
   const onDelete = () => {
@@ -81,6 +94,7 @@ export default function Appointment(props) {
           interviewer={props.interview.interviewer}
         />
       )}
+      {mode === ERROR && <Error onClose={back} />}
       {mode === STATUS && <Status />}
       {mode === CONFIRM && (
         <Confirm
