@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, userEffect } from "react";
 import "../Appointment/index.scss";
 
 import Header from "./Header";
@@ -62,11 +62,21 @@ export default function Appointment(props) {
     transition(EDIT);
   };
 
+  useEffect(() => {
+    console.log(props.interview && mode === EMPTY);
+    if (props.interview && mode === EMPTY) {
+      transition(SHOW);
+    }
+    if (props.interview === null && mode === SHOW) {
+      transition(EMPTY);
+    }
+  }, [mode, props.interview, transition]);
+
   return (
     <article className="appointment">
       {props.time ? <Header time={props.time} /> : "No Appointments"}
       {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
-      {mode === SHOW && (
+      {mode === SHOW && props.interview && (
         <Show
           student={props.interview.student}
           interviewer={props.interview.interviewer}
