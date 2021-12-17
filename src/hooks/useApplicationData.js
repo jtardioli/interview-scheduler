@@ -1,6 +1,5 @@
-import React, { useReducer, useEffect } from "react";
+import { useReducer, useEffect } from "react";
 import axios from "axios";
-import { cleanup } from "@testing-library/react/dist";
 const SET_DAY = "SET_DAY";
 const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
 const SET_INTERVIEW = "SET_INTERVIEW";
@@ -90,16 +89,6 @@ export default function useApplicationData() {
   }
 
   function cancelInterview(id) {
-    const appointment = {
-      ...state.appointments[id],
-      interview: null,
-    };
-
-    const appointments = {
-      ...state.appointments,
-      [id]: appointment,
-    };
-
     return axios
       .delete(`http://localhost:8001/api/appointments/${id}`)
       .then(() => {
@@ -121,7 +110,6 @@ export default function useApplicationData() {
           interview: data.interview,
         });
       }
-      console.log("message", data);
     };
     Promise.all([
       axios.get("http://localhost:8001/api/days"),

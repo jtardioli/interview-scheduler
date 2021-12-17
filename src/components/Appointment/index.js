@@ -1,4 +1,4 @@
-import React, { useEffect, userEffect } from "react";
+import React, { useEffect } from "react";
 import "../Appointment/index.scss";
 
 import Header from "./Header";
@@ -63,7 +63,6 @@ export default function Appointment(props) {
   };
 
   useEffect(() => {
-    console.log(props.interview && mode === EMPTY);
     if (props.interview && mode === EMPTY) {
       transition(SHOW);
     }
