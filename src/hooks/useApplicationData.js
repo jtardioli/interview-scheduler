@@ -11,18 +11,6 @@ export default function useApplicationData() {
     appointments: {},
   });
 
-  // function updateSpots(increment) {
-  //   const days = [...state.days];
-
-  //   for (let day of days) {
-  //     if (day.name === state.day) {
-  //       day.spots += increment;
-  //     }
-  //   }
-
-  //   return days;
-  // }
-
   function reducer(state, action) {
     switch (action.type) {
       case SET_DAY:
@@ -48,6 +36,7 @@ export default function useApplicationData() {
         return {
           ...state,
           appointments,
+          days: updateSpots(state),
         };
       }
       default:
@@ -55,6 +44,30 @@ export default function useApplicationData() {
           `Tried to reduce with unsupported action type: ${action.type}`
         );
     }
+  }
+
+  function updateSpots(state) {
+    const days = [...state.days];
+
+    const currentDay = days.filter((day) => {
+      return day.name === state.day;
+    })[0];
+
+    let newSpots = 0;
+    // loop through the time slots and check how many appointments are left
+    for (let appID of currentDay.appointments) {
+      if (!state.appointments[appID].interview) {
+        newSpots += 1;
+      }
+    }
+
+    for (let day of days) {
+      if (day.id === currentDay.id) {
+        day.spots = newSpots;
+      }
+    }
+
+    return days;
   }
 
   const setDay = (day) => dispatch({ type: SET_DAY, day });
