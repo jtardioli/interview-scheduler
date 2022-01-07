@@ -45,11 +45,6 @@ export default function useApplicationData() {
           [action.id]: appointment,
         };
 
-        // if (action.interview === null) {
-        //   days = updateSpots(1);
-        // } else {
-        //   days = updateSpots(-1);
-        // }
         return {
           ...state,
           appointments,
@@ -63,28 +58,12 @@ export default function useApplicationData() {
   }
 
   const setDay = (day) => dispatch({ type: SET_DAY, day });
-  //setState({ ...state, day };)
 
   function bookInterview(id, interview) {
-    // const appointment = {
-    //   ...state.appointments[id],
-    //   interview: { ...interview },
-    // };
-
-    // const appointments = {
-    //   ...state.appointments,
-    //   [id]: appointment,
-    // };
-
     return axios
       .put(`http://localhost:8001/api/appointments/${id}`, { interview })
       .then(() => {
         dispatch({ type: SET_INTERVIEW, id, interview });
-        // setState({
-        //   ...state,
-        //   appointments,
-        //   days: updateSpots(-1),
-        // });
       });
   }
 
