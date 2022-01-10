@@ -16,7 +16,8 @@ const CREATE = "CREATE";
 const STATUS = "STATUS";
 const CONFIRM = "CONFIRM";
 const EDIT = "EDIT";
-const ERROR = "ERROR";
+const ERROR_SAVE = "ERROR_SAVE";
+const ERROR_DELETE = "ERROR_DELETE";
 
 export default function Appointment(props) {
   const { mode, transition, back } = useVisualMode(
@@ -35,7 +36,7 @@ export default function Appointment(props) {
         transition(SHOW);
       })
       .catch((error) => {
-        transition(ERROR, true);
+        transition(ERROR_SAVE, true);
       });
   }
 
@@ -48,7 +49,7 @@ export default function Appointment(props) {
         transition(EMPTY);
       })
       .catch(() => {
-        transition(ERROR, true);
+        transition(ERROR_DELETE, true);
       });
   }
 
@@ -103,7 +104,8 @@ export default function Appointment(props) {
           interviewer={props.interview.interviewer}
         />
       )}
-      {mode === ERROR && <Error onClose={back} />}
+      {mode === ERROR_SAVE && <Error onClose={back} />}
+      {mode === ERROR_DELETE && <Error onClose={back} />}
       {mode === STATUS && <Status />}
       {mode === CONFIRM && (
         <Confirm
