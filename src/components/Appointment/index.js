@@ -105,7 +105,13 @@ export default function Appointment(props) {
         />
       )}
       {mode === ERROR_SAVE && <Error onClose={back} />}
-      {mode === ERROR_DELETE && <Error onClose={back} />}
+      {mode === ERROR_DELETE && (
+        <Error
+          onClose={() => {
+            transition(SHOW);
+          }}
+        />
+      )}
       {mode === STATUS && <Status />}
       {mode === CONFIRM && (
         <Confirm
